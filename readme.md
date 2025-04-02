@@ -5,3 +5,5 @@ Steps to run the application:
 4. Command to install the dependencies: mvn clean install
 5. Once the dependencies are installed either use the IDE to run the application or run the following command in the terminal: mvn-spring-boot:run
 6. Any kind of operation in the input folder will reflect in the output folder.
+
+7. DEMO - https://drive.google.com/file/d/1kHgP53iUb1sL5YZ-R8aCVncVknJcVnsg/view?usp=drive_link
