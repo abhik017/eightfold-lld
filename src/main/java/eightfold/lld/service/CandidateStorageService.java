@@ -18,13 +18,17 @@ import java.nio.file.Paths;
 public class CandidateStorageService {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final String OUTPUT_DIRECTORY = "/Users/AbhikMehta/Personal Projects/EightfoldLLD/output";
+    private final String OUTPUT_DIRECTORY = "./output";
+
+    public Path getOutputDirectoryAbsolutePath() {
+        return Paths.get("").toAbsolutePath().resolve(OUTPUT_DIRECTORY);
+    }
 
     public void storeCandidate(Candidate candidate) {
         try {
             String customerName = candidate.getId().split("_")[0];
             String fileName = candidate.getId().split("_")[1] + ".json";
-            Path outputDir = Paths.get(OUTPUT_DIRECTORY, customerName);
+            Path outputDir = Paths.get(getOutputDirectoryAbsolutePath().toString(), customerName);
             if (!Files.exists(outputDir)) {
                 log.info("Creating directory: " + outputDir);
                 Files.createDirectories(outputDir);
@@ -41,7 +45,7 @@ public class CandidateStorageService {
         try {
             String customerName = candidateId.split("_")[0];
             String candidate = candidateId.split("_")[1];
-            Path directory = Paths.get(OUTPUT_DIRECTORY, customerName);
+            Path directory = Paths.get(getOutputDirectoryAbsolutePath().toString(), customerName);
             if (Files.exists(directory)) {
                 File outputFile = directory.resolve(candidate + ".json").toFile();
                 if (outputFile.exists()) {

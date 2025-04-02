@@ -25,12 +25,16 @@ public class CandidateFilesWatcher implements CommandLineRunner {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final CandidateStorageService candidateStorageService;
-    private final String INPUT_DIRECTORY  = "/Users/AbhikMehta/Personal Projects/EightfoldLLD/input";
+    private final String INPUT_DIRECTORY  = "./input";
+
+    private Path getInputDirectoryAbsolutePath() {
+        return Paths.get("").toAbsolutePath().resolve(INPUT_DIRECTORY);
+    }
 
     @Override
     public void run(String... args) throws Exception {
         WatchService watchService = FileSystems.getDefault().newWatchService();
-        Path inputDir = Paths.get(INPUT_DIRECTORY);
+        Path inputDir = getInputDirectoryAbsolutePath();
         registerAll(inputDir, watchService);
         initialize();
         while (true) {
@@ -60,8 +64,8 @@ public class CandidateFilesWatcher implements CommandLineRunner {
     
     private void initialize() {
         try {
-            log.info("Initializing first time parsing of files in directory: " + INPUT_DIRECTORY);
-            Files.walk(Paths.get(INPUT_DIRECTORY))
+            log.info("Initializing first time parsing of files in directory: " + getInputDirectoryAbsolutePath());
+            Files.walk(getInputDirectoryAbsolutePath())
                 .filter(path -> path.toString().endsWith(".json"))
                 .forEach(this::processFile);
         } catch (IOException e) {
